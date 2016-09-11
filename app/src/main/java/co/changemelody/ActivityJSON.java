@@ -130,7 +130,7 @@ public class ActivityJSON extends Activity implements OnClickListener {
                 if(!validate())
                     Toast.makeText(getBaseContext(), "Enter some data!", Toast.LENGTH_LONG).show();
                 // call AsynTask to perform network operation on separate thread
-                new HttpAsyncTask().execute("https://monomach.mircloud.host/addCoordinates");
+                new HttpAsyncTask().execute("https://monomach.mircloud.host/jsonservlet");
                 break;
         }
 
