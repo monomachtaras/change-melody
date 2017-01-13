@@ -49,9 +49,6 @@ public class GPSTracker extends Service implements LocationListener {
     }
     public GPSTracker(){}
 
-    /**
-     * Try to get my current location by GPS or Network Provider
-     */
     public void getLocation() {
 
         try {
@@ -65,7 +62,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             // Try to get location if you GPS Service is enabled
             if (isGPSEnabled) {
-                Log.d(TAG,String.valueOf(isGPSEnabled) );
+                Log.d(TAG, String.valueOf(isGPSEnabled));
                 this.isGPSTrackingEnabled = true;
 
                 Log.d(TAG, "Application use GPS Service");
@@ -80,7 +77,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             } else if (isNetworkEnabled) { // Try to get location if you Network Service is enabled
                 this.isGPSTrackingEnabled = true;
-                Log.d(TAG,String.valueOf(isNetworkEnabled) );
+                Log.d(TAG, String.valueOf(isNetworkEnabled));
                 Log.d(TAG, "Application use Network State to get GPS coordinates");
 
                 /*
@@ -92,32 +89,30 @@ public class GPSTracker extends Service implements LocationListener {
 
             }
 
-            // Application can use GPS or Network Provider
-            if (!provider_info.isEmpty()) {
-                locationManager.requestLocationUpdates(
-                        provider_info,
-                        MIN_TIME_BW_UPDATES,
-                        MIN_DISTANCE_CHANGE_FOR_UPDATES,
-                        this
-                );
+            if (provider_info != null) {
+                if (!provider_info.isEmpty()) {
+                    locationManager.requestLocationUpdates(
+                            provider_info,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES,
+                            this
+                    );
 
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(provider_info);
-                    Log.d(TAG, provider_info+" provider info");
-                    updateGPSCoordinates();
-                }
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(provider_info);
+                        Log.d(TAG, provider_info + " provider info");
+                        updateGPSCoordinates();
+                    }
+                }}
             }
-        }
-        catch (Exception e)
-        {
-            //e.printStackTrace();
-            Log.e(TAG, "Impossible to connect to LocationManager", e);
-        }
+            catch(Exception e){
+                //e.printStackTrace();
+                Log.e(TAG, "Impossible to connect to LocationManager", e);
+            }
+
     }
 
-    /**
-     * Update GPSTracker latitude and longitude
-     */
+
     public void updateGPSCoordinates() {
         if (location != null) {
             latitude = location.getLatitude();
@@ -143,19 +138,12 @@ public class GPSTracker extends Service implements LocationListener {
         return longitude;
     }
 
-    /**
-     * GPSTracker isGPSTrackingEnabled getter.
-     * Check GPS/wifi is enabled
-     */
-    public boolean getIsGPSTrackingEnabled() {
 
+    public boolean getIsGPSTrackingEnabled() {
         return this.isGPSTrackingEnabled;
     }
 
-    /**
-     * Stop using GPS listener
-     * Calling this method will stop using GPS in your app
-     */
+
     public void stopUsingGPS() {
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
@@ -196,10 +184,7 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.show();
     }
 
-    /**
-     * Get list of address by latitude and longitude
-     * @return null or List<Address>
-     */
+
     public List<Address> getGeocoderAddress(Context context) {
         if (location != null) {
 
@@ -222,10 +207,7 @@ public class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
-    /**
-     * Try to get AddressLine
-     * @return null or addressLine
-     */
+
     public String getAddressLine(Context context) {
         List<Address> addresses = getGeocoderAddress(context);
 
@@ -239,10 +221,7 @@ public class GPSTracker extends Service implements LocationListener {
         }
     }
 
-    /**
-     * Try to get Locality
-     * @return null or locality
-     */
+
     public String getLocality(Context context) {
         List<Address> addresses = getGeocoderAddress(context);
 
@@ -257,38 +236,6 @@ public class GPSTracker extends Service implements LocationListener {
         }
     }
 
-    /**
-     * Try to get Postal Code
-     * @return null or postalCode
-     */
-    public String getPostalCode(Context context) {
-        List<Address> addresses = getGeocoderAddress(context);
-
-        if (addresses != null && addresses.size() > 0) {
-            Address address = addresses.get(0);
-            String postalCode = address.getPostalCode();
-
-            return postalCode;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Try to get CountryName
-     * @return null or postalCode
-     */
-    public String getCountryName(Context context) {
-        List<Address> addresses = getGeocoderAddress(context);
-        if (addresses != null && addresses.size() > 0) {
-            Address address = addresses.get(0);
-            String countryName = address.getCountryName();
-
-            return countryName;
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public void onLocationChanged(Location location) {

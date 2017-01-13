@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         long firstMillis = System.currentTimeMillis(); // alarm is set right away
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, 600000, pIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, 300000, pIntent);
     }
 
     public String getRealPathFromURI(Context context, Uri contentUri) {

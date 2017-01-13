@@ -121,7 +121,7 @@ class MyDBHandler  extends SQLiteOpenHelper {
 
     public static void writeToFile(String data,Context context) {
         try {
-            outputStreamWriter = new OutputStreamWriter(context.openFileOutput("config.txt",  Context.MODE_PRIVATE));
+            outputStreamWriter = new OutputStreamWriter(context.openFileOutput("config.txt",  Context.MODE_APPEND));
             outputStreamWriter.write(data+"\n");
             outputStreamWriter.close();
         }
